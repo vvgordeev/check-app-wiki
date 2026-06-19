@@ -1,0 +1,54 @@
+{
+  "features": [
+    {
+      "id": "task-management",
+      "title": "Управление задачами",
+      "docPath": "docs/features/task-management.md",
+      "owners": ["product", "docs"],
+      "roles": ["user", "manager"],
+      "tags": ["tasks", "workflow"],
+      "codePaths": [
+        "src/modules/tasks/",
+        "src/pages/tasks/",
+        "backend/tasks/"
+      ],
+      "screenshots": [
+        {
+          "id": "task-list",
+          "path": "docs/assets/screens/task-management/task-list.png",
+          "scenario": "open-task-list"
+        }
+      ],
+      "scenarios": [
+        "create-task",
+        "assign-task",
+        "track-deadline"
+      ]
+    },
+    {
+      "id": "reporting",
+      "title": "Отчёты",
+      "docPath": "docs/features/reporting.md",
+      "owners": ["analytics", "docs"],
+      "roles": ["manager", "admin"],
+      "tags": ["reports", "analytics"],
+      "codePaths": [
+        "src/modules/reports/",
+        "src/pages/reports/",
+        "backend/reports/"
+      ],
+      "screenshots": [
+        {
+          "id": "report-dashboard",
+          "path": "docs/assets/screens/reporting/report-dashboard.png",
+          "scenario": "open-report-dashboard"
+        }
+      ],
+      "scenarios": [
+        "build-report",
+        "filter-report",
+        "export-report"
+      ]
+    }
+  ]
+}

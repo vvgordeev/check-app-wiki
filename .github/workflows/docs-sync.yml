@@ -1,0 +1,54 @@
+name: Sync Wiki Docs
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [product-updated]
+
+jobs:
+  refresh-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout wiki repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Detect impacted features
+        id: impacts
+        env:
+          CHANGED_FILES: ${{ join(github.event.client_payload.changed_files, ' ') }}
+        run: |
+          python scripts/detect_doc_impacts.py $CHANGED_FILES > impacts.json
+          cat impacts.json
+
+      - name: Regenerate feature pages
+        run: python scripts/generate_feature_docs.py
+
+      - name: Build screenshot plan
+        run: python scripts/render_screenshot_plan.py > screenshot-plan.json
+
+      - name: Upload plans
+        uses: actions/upload-artifact@v4
+        with:
+          name: wiki-sync-artifacts
+          path: |
+            impacts.json
+            screenshot-plan.json
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "docs: refresh wiki content"
+          branch: "bot/wiki-sync"
+          title: "docs: refresh wiki after product update"
+          body: |
+            Автоматически подготовлен черновик обновления wiki.
+
+            В PR нужно проверить:
+            - соответствие описаний фактическому поведению
+            - корректность прикреплённых скриншотов
+            - полноту сценариев

@@ -1,0 +1,45 @@
+name: Notify Wiki
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout product repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Collect changed files
+        id: changed
+        run: |
+          git diff --name-only HEAD^ HEAD > changed-files.txt
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          changed = [line.strip() for line in Path("changed-files.txt").read_text().splitlines() if line.strip()]
+          payload = {
+              "event_type": "product-updated",
+              "client_payload": {
+                  "source_repository": "${{ github.repository }}",
+                  "source_sha": "${{ github.sha }}",
+                  "changed_files": changed
+              }
+          }
+          Path("dispatch.json").write_text(json.dumps(payload), encoding="utf-8")
+          PY
+
+      - name: Dispatch update to wiki repo
+        env:
+          GITHUB_TOKEN: ${{ secrets.WIKI_REPO_DISPATCH_TOKEN }}
+          WIKI_REPO: org/product-wiki
+        run: |
+          curl -L \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            https://api.github.com/repos/${WIKI_REPO}/dispatches \
+            -d @dispatch.json

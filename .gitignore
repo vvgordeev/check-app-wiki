@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+site/
+impacts.json
+screenshot-plan.json
+changed-files.txt
+dispatch.json

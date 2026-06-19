@@ -1,0 +1,16 @@
+{
+  "scenarios": [
+    {
+      "id": "open-task-list",
+      "description": "Открыть список задач и дождаться полной загрузки таблицы",
+      "route": "/tasks",
+      "requiresAuth": true
+    },
+    {
+      "id": "open-report-dashboard",
+      "description": "Открыть главную страницу отчётов и дождаться рендеринга графиков",
+      "route": "/reports",
+      "requiresAuth": true
+    }
+  ]
+}

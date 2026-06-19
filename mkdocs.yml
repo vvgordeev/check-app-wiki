@@ -1,0 +1,34 @@
+site_name: Product Wiki
+site_description: Пользовательская документация по продукту
+site_url: https://wiki.example.com
+repo_url: https://github.com/example/product-wiki
+theme:
+  name: material
+  language: ru
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+plugins:
+  - search
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+nav:
+  - Главная: index.md
+  - Начало работы:
+      - Обзор системы: getting-started/overview.md
+      - Роли пользователей: getting-started/roles.md
+  - Сценарии:
+      - Типовые сценарии: scenarios/index.md
+  - Функции:
+      - Каталог функций: features/index.md
+      - Управление задачами: features/task-management.md
+      - Отчёты: features/reporting.md
+  - Администрирование:
+      - Настройки и доступы: administration/access.md
+  - Изменения:
+      - История документации: changelog.md
